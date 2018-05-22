@@ -79,31 +79,13 @@
     <div class="layui-body">
         <!-- 内容主体区域 -->
         <div style="padding: 15px;">
-            <table class="layui-table">
-                <colgroup>
-                    <col>
-                    <col>
-                    <col>
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>帐号</th>
-                    <th>密码</th>
-                    <th>昵称</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="user" items="${users}">
-                    <tr>
-                        <th>${user.id}</th>
-                        <th>${user.account}</th>
-                        <th>${user.password}</th>
-                        <th>${user.username}</th>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+            <div class="layui-btn-group toolBar">
+                <button class="layui-btn" data-type="getCheckData">获取选中行数据</button>
+                <button class="layui-btn" data-type="getCheckLength">获取选中数目</button>
+                <button class="layui-btn" data-type="isAll">验证是否全选</button>
+                <button class="layui-btn" data-type="isDelete">是否删除</button>
+            </div>
+            <table id="demo" lay-filter="test"></table>
         </div>
     </div>
 
@@ -117,6 +99,60 @@
     //JavaScript代码区域
     layui.use('element', function(){
         var element = layui.element;
+    });
+    // Table
+    var getListUrl = '${ctx}/getUsers';
+    layui.use('table', function(){
+        var table = layui.table;
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            ,cellMinWidth: 80 // 列宽自动分配
+            ,height: 'full-200' //
+            ,limits: [5, 15, 30]
+            ,limit: 15 //每页默认显示的数量
+            ,url: getListUrl //数据接口
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {type:'checkbox'}
+                ,{field: 'id', title: 'ID', align: 'center', sort: true}
+                ,{field: 'account', title: '帐号', align: 'center', sort: true}
+                ,{field: 'password', title: '密码', align: 'center', sort: true}
+                ,{field: 'username', title: '用户名', align: 'center', sort: true}
+            ]]
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demo)', function(obj){
+            console.log(obj)
+        });
+
+        var $ = layui.$, active = {
+            getCheckData: function(){ //获取选中数据
+                var checkStatus = table.checkStatus('demo')
+                    ,data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+            ,getCheckLength: function(){ //获取选中数目
+                var checkStatus = table.checkStatus('demo')
+                    ,data = checkStatus.data;
+                layer.msg('选中了：'+ data.length + ' 个');
+            }
+            ,isAll: function(){ //验证是否全选
+                var checkStatus = table.checkStatus('demo');
+                layer.msg(checkStatus.isAll ? '全选': '未全选')
+            },isDelete: function(){ //是否删除
+                var checkStatus = table.checkStatus('demo')
+                    ,data = checkStatus.data;
+                layer.confirm('真的删除行么', function(){
+                    layer.msg('删除了：'+ data.length + ' 个');
+                });
+            }
+        };
+        $('.toolBar .layui-btn').on('click', function(){
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
     });
 </script>
 </body>

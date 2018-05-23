@@ -74,7 +74,7 @@
                     <property name="properties">
                         <!--使用下面的方式配置参数，一行配置一个 -->
                         <value>
-                            <!--<!–分页参数合理化  –>-->
+                            <!--分页参数合理化-->
                             reasonable=true
                         </value>
                     </property>
@@ -84,8 +84,20 @@
     </bean>
 
     <!-- MyBatis 动态扫描  -->
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+    <!--<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.wang.mapper"/>
+    </bean>-->
+
+    <!-- 通用Mapper  -->
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.wang.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="properties">
+            <value>
+                <!--是否判断字符串类型-->
+                notEmpty=true
+            </value>
+        </property>
     </bean>
 
     <!-- MyBatis sqlSession模板  -->

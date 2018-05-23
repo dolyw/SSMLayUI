@@ -6,7 +6,7 @@ use ssmlayui;
 /*用户表*/
 create table user (
 id int primary key auto_increment COMMENT "ID",
-account varchar(20) not null unique COMMENT "帐号",
+account varchar(20)  COMMENT "帐号",
 password varchar(20) COMMENT "密码",
 username varchar(20) COMMENT "昵称",
 regtime datetime not null COMMENT "注册时间"

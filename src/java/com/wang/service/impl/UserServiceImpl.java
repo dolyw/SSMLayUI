@@ -5,7 +5,7 @@ import com.wang.mapper.UserMapper;
 import com.wang.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -16,11 +16,31 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements IUserService {
 
-    @Autowired
+    @Resource
     private UserMapper userMapper;
 
     @Override
     public List<User> selectAll() {
         return userMapper.selectAll();
+    }
+
+    @Override
+    public int insert(User user) {
+        return userMapper.insert(user);
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(User user) {
+        return userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    @Override
+    public int delete(User user) {
+        return userMapper.delete(user);
+    }
+
+    @Override
+    public User selectOne(User user) {
+        return userMapper.selectOne(user);
     }
 }

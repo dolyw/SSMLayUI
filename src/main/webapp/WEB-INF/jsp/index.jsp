@@ -305,6 +305,10 @@
             },delete: function(){ //是否删除
                 var checkStatus = table.checkStatus('demo')
                     ,data = checkStatus.data;
+                if(data.length < 1){
+                    layer.msg('请选择一条以上数据');
+                    return;
+                }
                 layer.confirm('真的删除行么', function(){
                     //layer.alert(JSON.stringify(data));
                     //layer.msg('删除了：'+ data.length + ' 个');

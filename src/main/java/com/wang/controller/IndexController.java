@@ -23,7 +23,6 @@ import java.util.Map;
  * @Date 2018/5/21 17:01
  */
 @Controller
-/*@RequestMapping("/index")*/
 @ApiIgnore
 public class IndexController {
 
@@ -45,9 +44,8 @@ public class IndexController {
 		PageHelper.startPage(page, limit);
 		List<User> users = userService.selectAll();
 		PageInfo<User> selectPage = new PageInfo<User>(users);
-		Map map = new HashMap();
+		Map map = new HashMap(16);
 		map.put("code", "0");
-		//map.put("msg", "");
 		map.put("count", selectPage.getTotal());
 		map.put("data", selectPage.getList());
 		return map;
@@ -78,7 +76,7 @@ public class IndexController {
 	public Map findById(String jsons){
 		List<User> users = JsonListUtil.jsonToList(jsons, User.class);
 		User user = userService.selectOne(users.get(0));
-		Map map = new HashMap();
+		Map map = new HashMap(16);
 		map.put("obj", user);
 		return map;
 	}
